@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  cloud-desktop:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: roblox-cloud-desktop
+    ports:
+      - "6080:6080"   # noVNC web interface
+      - "8554:8554"   # GStreamer RTSP stream
+      - "5900:5900"   # VNC server
+      - "3000:3000"   # Node.js backend API
+    environment:
+      - DISPLAY=:99
+      - VNC_PASSWORD=password
+      - RESOLUTION=1920x1080x24
+    volumes:
+      - wine-data:/home/desktopuser/.wine
+      - roblox-data:/home/desktopuser/roblox-projects
+    shm_size: '2gb'
+    cap_add:
+      - SYS_ADMIN
+      - NET_ADMIN
+    devices:
+      - /dev/fuse
+    security_opt:
+      - apparmor:unconfined
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "Xvfb"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Optional: Separate backend service for API handling
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: roblox-backend
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - DESKTOP_CONTAINER_URL=http://cloud-desktop:6080
+      - JWT_SECRET=your-secret-key-change-in-production
+    depends_on:
+      - cloud-desktop
+    restart: unless-stopped
+
+volumes:
+  wine-data:
+    driver: local
+  roblox-data:
+    driver: local
+
+networks:
+  default:
+    name: roblox-cloud-network
+    driver: bridge
