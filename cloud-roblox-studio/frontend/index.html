@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Roblox Studio - Browser-Based Game Development</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="logo">🎮</span>
+            <h1>Cloud Roblox Studio</h1>
+        </div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#docs">Documentation</a>
+            <button id="loginBtn" class="btn-secondary">Login</button>
+            <button id="registerBtn" class="btn-primary">Sign Up</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Create Roblox Games in Your Browser</h2>
+            <p>Run Roblox Studio on any device with our cloud-powered streaming technology. No high-end hardware required!</p>
+            <button id="startStudioBtn" class="btn-large btn-primary">
+                🚀 Start Roblox Studio
+            </button>
+            <p class="hero-subtext">Free tier available • No credit card required</p>
+        </div>
+        <div class="hero-image">
+            <div class="floating-card">
+                <div class="card-header">
+                    <span class="status-dot"></span>
+                    <span>Cloud Desktop Active</span>
+                </div>
+                <div class="card-body">
+                    <div class="stat-row">
+                        <span>Latency</span>
+                        <span class="stat-value">24ms</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>FPS</span>
+                        <span class="stat-value">60</span>
+                    </div>
+                    <div class="stat-row">
+                        <span>Resolution</span>
+                        <span class="stat-value">1920x1080</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <h2>Why Choose Cloud Roblox Studio?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Ultra-Low Latency</h3>
+                <p>Experience near-instant response times with our optimized WebRTC streaming technology.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💻</div>
+                <h3>Any Device Support</h3>
+                <p>Run Roblox Studio on old laptops, tablets, or even smartphones with full functionality.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">☁️</div>
+                <h3>Cloud Storage</h3>
+                <p>Your projects are automatically saved and synced across all your devices.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Secure & Private</h3>
+                <p>Enterprise-grade encryption keeps your creations safe and secure.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Login</button>
+                <button class="tab-btn" data-tab="register">Register</button>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form active">
+                <h2>Welcome Back</h2>
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername" required placeholder="Enter your username">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn-primary btn-full">Login</button>
+                <p class="form-footer">Don't have an account? <a href="#" data-tab="register">Register</a></p>
+            </form>
+            
+            <!-- Register Form -->
+            <form id="registerForm" class="auth-form">
+                <h2>Create Account</h2>
+                <div class="form-group">
+                    <label for="registerUsername">Username</label>
+                    <input type="text" id="registerUsername" required placeholder="Choose a username">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword" required placeholder="Create a password">
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword">Confirm Password</label>
+                    <input type="password" id="registerConfirmPassword" required placeholder="Confirm your password">
+                </div>
+                <button type="submit" class="btn-primary btn-full">Create Account</button>
+                <p class="form-footer">Already have an account? <a href="#" data-tab="login">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Streaming Overlay (hidden by default) -->
+    <div id="streamingOverlay" class="streaming-overlay">
+        <div class="overlay-header">
+            <div class="session-info">
+                <span class="status-indicator active"></span>
+                <span id="sessionStatus">Connecting to Cloud Desktop...</span>
+            </div>
+            <div class="overlay-controls">
+                <button id="fullscreenBtn" class="btn-icon" title="Fullscreen">⛶</button>
+                <button id="minimizeBtn" class="btn-icon" title="Minimize">−</button>
+                <button id="stopSessionBtn" class="btn-danger" title="Stop Session">Stop Session</button>
+            </div>
+        </div>
+        <div class="streaming-container">
+            <iframe id="streamFrame" src="" frameborder="0" allowfullscreen></iframe>
+            <div id="loadingSpinner" class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Starting your cloud desktop...</p>
+                <p class="loading-subtext">This may take up to 30 seconds</p>
+            </div>
+        </div>
+        <div class="overlay-footer">
+            <div class="stats-bar">
+                <span class="stat-item">
+                    <span class="stat-label">FPS:</span>
+                    <span id="fpsCounter" class="stat-value">--</span>
+                </span>
+                <span class="stat-item">
+                    <span class="stat-label">Latency:</span>
+                    <span id="latencyCounter" class="stat-value">-- ms</span>
+                </span>
+                <span class="stat-item">
+                    <span class="stat-label">Bandwidth:</span>
+                    <span id="bandwidthCounter" class="stat-value">-- Mbps</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Dashboard (shown when logged in) -->
+    <div id="userDashboard" class="dashboard hidden">
+        <div class="dashboard-header">
+            <h2>Welcome, <span id="usernameDisplay">User</span>!</h2>
+            <button id="logoutBtn" class="btn-secondary">Logout</button>
+        </div>
+        <div class="dashboard-content">
+            <div class="recent-sessions">
+                <h3>Recent Sessions</h3>
+                <div id="sessionsList" class="sessions-list">
+                    <p class="empty-state">No recent sessions</p>
+                </div>
+            </div>
+            <div class="quick-actions">
+                <h3>Quick Actions</h3>
+                <button id="newSessionBtn" class="btn-primary">New Session</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
