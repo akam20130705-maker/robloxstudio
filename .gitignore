@@ -9,7 +9,7 @@ node_modules/
 # Environment
 .env
 .env.local
-.env.*
+.env.
 
 # Editors
 .vscode/
@@ -25,16 +25,8 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.Python
-env/
-venv/
-.venv/
-.ENV
-.venv.bak/
-pip-log.txt
-pip-selfcheck.json
 
-# Compressed files
+# Compression
 *.zip
 *.gz
 *.tar
@@ -53,13 +45,26 @@ pip-selfcheck.json
 *.Z
 *.lz
 *.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst
 
-# OS generated files
+# OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
+
+# Testing
+coverage/
+htmlcov/
+.coverage
+
+# Cache
+.mypy_cache/
+.pytest_cache/
+.gradle/
+
+# Virtual environments
+.venv/
+venv/
 ```
